@@ -27,9 +27,7 @@ class Word {
  ///////////////////////////////////////////
   // implement the guessLetter function:
   guessLetter(letter) {
-    console.log(letter)
-    console.log(this.word)
-    console.log(this.word.indexOf(letter))
+
     //Check if letter is in the word
     if (this.word.indexOf(letter) > -1){ //Letter is in word, value > -1
       
@@ -54,23 +52,22 @@ class Word {
       
       //update displayWord
       this.displayWord = updated_word.join("")
-      console.log(this.displayWord)
+      
 
       //Add to correct letter []
       this.correctLetters.push(letter)
-      console.log(this.correctLetters)
+      
 
 
     }else { //Letter is NOT in word
-      console.log("NOT in word")
+
+      //RemainingGuesses -1
+      this.remainingGuesses--
+    
+      //Add letter to incorrect letters
+      this.incorrectLetters.push(letter)
     }
-    // if (letter = true ) {
-    //   this.displayWord
-    //   this.correctLetters
-    // } else {
-    //   this.incorrectLetters
-    //   (this.remainingGuesses - 1)
-    // }
+
   }
 
   // implement the updateScreen function:
@@ -87,23 +84,35 @@ class Word {
     displayWordEl.innerHTML = this.displayWord
   }
 
-  // // implement the isGameOver function:
-  // isGameOver() {
-  //   if (this.remainingGuesses.value <= 0 | word == this.displayWord) {
-  //     true
-  //   } else {
-  //     false
-  //   }
-  // }
+  // implement the isGameOver function:
+  isGameOver() {
+    //Determine if the Game is Over
+    if (this.remainingGuesses <= 0 | this.word == this.displayWord) {//No guesses left OR Word is Guessed
+      return true
+    } else { //Game is NOT Over
+      return false
+    }
+  }
 
-  // // implement the getWinOrLoss function:
-  // getWinOrLoss() {
-  //   if (word == this.displayWord & this.remainingGuesses.value > 0){
-  //     "win"
-  //   } else (this.displayWord != word & this.remainingGuesses <= 0) {
-  //     "loss"
-  //   } return null 
-  // }
+  // implement the getWinOrLoss function:
+  getWinOrLoss() {
+
+    //if word is equal and remaining guesses is > 0
+    if (this.word == this.displayWord & this.remainingGuesses > 0){
+
+      return "win"
+
+    } else if (this.displayWord != this.word & this.remainingGuesses <= 0) //if word is not equal and no more guesses remain
+    {
+      return "loss"
+
+    } else{
+
+      return null
+    }
+
+    
+  }
   ///////////////////////////////////////////////////
 
 }
@@ -115,7 +124,7 @@ function newGame() {
 }
 
 document.onkeyup = function(e) {
-  console.log("duck")
+
   const pressedKey = e.key.toLowerCase()
   // early exit for non-letter key presses
   if (!/^[a-z]{1}$/g.test(pressedKey)) return
